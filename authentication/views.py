@@ -2,14 +2,16 @@ from django.shortcuts import render
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializer import UserRegistrationSerializer, UserLoginSerializer, UserInfoSerializer
+from .serializer import UserRegistrationSerializer, UserLoginSerializer, UserInfoSerializer, UserListSerializer
 from rest_framework import status
 from .models import UserInfo
 from rest_framework.authentication import authenticate
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth.models import User
+from django.db.models import Q
 # Create your views here.
-
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
 
@@ -51,7 +53,7 @@ class UserInfoView(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        userinfo = self.get_object(pk)
+        userinfo = UserInfo.objects.get(user=request.user)
         serializer = UserInfoSerializer(userinfo, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -71,3 +73,11 @@ class UserInfoView(APIView):
         userinfo = UserInfo.objects.get(user=request.user)
         userinfo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_userlist(request):
+    users = User.objects.all()
+    user = users.exclude(id=request.user.id)
+    serializer = UserListSerializer(user, many=True)
+    return Response(serializer.data)

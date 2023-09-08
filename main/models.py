@@ -14,7 +14,7 @@ class Task(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     des = models.TextField(max_length=300)
-    due_date = models.DateField()
+    due_date = models.CharField(max_length=30)
     assign = models.ManyToManyField(User)
     status = models.CharField(max_length=50)
     priority = models.PositiveIntegerField()
