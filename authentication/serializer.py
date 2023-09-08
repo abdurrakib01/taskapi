@@ -31,8 +31,15 @@ class UserLoginSerializer(serializers.ModelSerializer):
     
 
 class UserInfoSerializer(serializers.ModelSerializer):
-    user_id = serializers.ReadOnlyField(source='author.id')
+    username = serializers.ReadOnlyField(source='user.username')
     image = serializers.ImageField()
     class Meta:
         model = UserInfo
-        fields = ('user_id', 'image', 'bio')
+        fields = ('username', 'image', 'bio')
+
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', "username")

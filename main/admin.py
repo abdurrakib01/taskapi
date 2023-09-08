@@ -2,5 +2,7 @@ from django.contrib import admin
 from .models import Team, Task
 # Register your models here.
 
-admin.site.register(Team)
+class CustomTeam(admin.ModelAdmin):
+    list_display = ['id', 'name']
+admin.site.register(Team, CustomTeam)
 admin.site.register(Task)
