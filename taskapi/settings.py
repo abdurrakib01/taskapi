@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-1)t*2ut__dceex1it&-6ys(@@p(j39s=lxbmr!bm9w%d8ayva8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -60,6 +60,7 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://taskmgmt-two.vercel.app',
 ]
 
 ROOT_URLCONF = 'taskapi.urls'
